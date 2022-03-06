@@ -71,3 +71,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+## Invite to the your Server
+https://discord.com/api/oauth2/authorize?client_id=949687840504160267&permissions=268435456&scope=bot
