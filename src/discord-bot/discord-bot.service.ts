@@ -7,6 +7,7 @@ import { BOT_TOKEN, DISCORD_SERVER, IOTABOTS_ROLE } from '../secrets';
 import { ethers } from 'ethers';
 import { ConnectDiscordDto } from './dtos/connect-discord.dto';
 import { getDiscordUserInfo } from './discord.utils';
+import axios from 'axios';
 
 @Injectable()
 export class DiscordBotService {
@@ -24,7 +25,7 @@ export class DiscordBotService {
   }
 
   /**
-   * Map an eth address to a discord id and then subsequently issue the role 
+   * Map an eth address to a discord id and then subsequently issue the role
    * to the user
    *
    * @param {ConenctDiscordDto}
@@ -41,11 +42,40 @@ export class DiscordBotService {
       await this.userModel.create({ discordUser: id, ethAddr });
     }
 
-    // do this if user has nft
-    const guild = this.bot.guilds.cache.find(
-      (g: Guild) => g.id === DISCORD_SERVER,
-    );
-    const member = await guild?.members.fetch(id);
-    await member?.roles.add(IOTABOTS_ROLE);
+    const URL =
+      'https://raw.githubusercontent.com/iotabots/save-the-bots/main/all.txt';
+
+    const { data } = await axios.get(URL);
+    console.log('data', data);
+
+    const airdropAddresses: Array<any> = [];
+
+    if (!data) {
+      return;
+    }
+
+    const array = data.split('\n');
+    // for (var i = 0; i < array.length; i++) {
+    for (let index = 0; index < array.length - 1; index += 1) {
+      const botData = array[index].split(':');
+      const obj = {
+        id: botData[0],
+        address: botData[1],
+      };
+      airdropAddresses.push(obj);
+    }
+
+    const iotabots = (airdropAddresses || [])
+      .filter((obj) => obj?.address === ethAddr)
+      .map((obj) => obj.id);
+
+    if (iotabots.length > 0) {
+      // do this if user has nft
+      const guild = this.bot.guilds.cache.find(
+        (g: Guild) => g.id === DISCORD_SERVER,
+      );
+      const member = await guild?.members.fetch(id);
+      await member?.roles.add(IOTABOTS_ROLE);
+    }
   }
 }
