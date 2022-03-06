@@ -72,6 +72,8 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 Nest is [MIT licensed](LICENSE).
 
+## Special Thanks
+The project was inspired by  [Tangle-Labs/nft-bot](https://github.com/Tangle-Labs/nft-bot). Special thanks to [merul#0001](https://github.com/coodos) for setting this up! 
 
 ## Invite to the your Server
 https://discord.com/api/oauth2/authorize?client_id=949687840504160267&permissions=268435456&scope=bot
